@@ -11,8 +11,8 @@ project:
 
 
 book:
-  title: "project title"
-  author: ["student 1 first and last name", "student 2 first and last name", "student 3 first and last name"]
+  title: "The Truth Behind Groundhog Accuracy: A Data-Driven Study"
+  author: ["Zeke Friendly", "Mayande Mamba", "Jeoy Gebin"]
   date: today  # use today to update date published based on last time project was edited
   date-format: full
   # favicon: images/logo.png
@@ -38,6 +38,18 @@ book:
   chapters:
     - index.qmd
 
+    - part: "Effective Team Work"
+      chapters:
+      - teamwork/teamwork-zeke.qmd
+      - teamwork/teamwork-joey.qmd
+      - teamwork/teamwork-mayande.qmd
+      
+    - part: "EDA"
+      chapters:
+      - EDA/EDA-zeke.qmd
+      - EDA/EDA-joey.qmd
+      - EDA/EDA-mayande.qmd
+      
   appendices:
   - src/appx/proposal.qmd
   - src/appx/case-study.qmd

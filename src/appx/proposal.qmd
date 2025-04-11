@@ -2,4 +2,21 @@
 title: "Proposal"
 ---
 
-Your proposal will go here.
+Title: a title: The Truth Behind Groundhog Accuracy: A Data-Driven Study
+
+Names: Joey Gebin, Zeke Friendly, Mayande Mamba 
+
+Short description of the project: We will explore the last 130 years of groundhog predictions, analyzing how correct they were about winter/spring, how often do groundhogs agree, and whether factors (like location) might affect the accuracy of their predictions. We also are interested in exploring which is more accurate between groundhog and non groundhog predictions
+
+The reasons/inspirations behind choosing this project: We are curious to explore how effective groundhog prediction actually and what are some key identifiable patterns of the predictions
+
+Implementation and responsibility plan: 
+- Deliverables: - Group/ Project Information submission 
+                - Effective Teamwork Reading Summary
+                - Combine data sets (and add weather outcomes)(filter out Canada observations) 
+
+
+
+
+
+
