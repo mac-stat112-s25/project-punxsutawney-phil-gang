@@ -2,4 +2,14 @@
 title: "Case Study"
 ---
 
-Your case study will go here.
+
+[Case Study: Uber Is Taking Millions Of Manhattan Rides Away From Taxis](https://fivethirtyeight.com/features/uber-is-taking-millions-of-manhattan-rides-away-from-taxis/)
+
+Observations: The visualizations use in the article are effective. The first graph shows the changes in NYC pickups by Uber compared to yellow cabs, green cabs. We can clearly compare this behavior and infer how each transport type has done over time relative to each other. According tho the article's graph we can now compare the April-to-June period in each year. Uber pickups in New York City rose sharply over this time span — no surprise, as the company was aggressively entering the market. Green cabs (which pick up passengers in the outer boroughs and in northern Manhattan) saw an uptick, while yellow cab pickups declined, according to ride data. 
+
+The second graph shows a set of chloropleth maps that show the net change in total, taxi, and Uber pickups from April-June 2014 to April-June 2015.Zones marked in blue experienced a net decrease in pickups, while red zones saw a net increase. Through this use of color and gradient, we can see how each type of service has changed in total over the area of research. According to the article we can infer that "Both taxis and Ubers increased their pickups in Brooklyn and Queens, particularly in gentrifying areas; the services are supplementing each other in these neighborhoods. Uber also gained in Staten Island and the Bronx, while taxi pickups were flat in those boroughs. In Manhattan’s core the area outlined on the maps, where green cabs aren’t allowed to make pickups". Overall, the maps have titles, effective use of color and gradient that is inclusive. There are additional labels that help inform the information on the graphs. 
+
+The article also has used a table to supplement the visualization. We are able to see the numbers aligning with the behavior we see on the map. 
+
+The last visualization is a linear plot (line of best fit), with bubble plots showing how Uber is replacing cabs in Manhattan. It shows the change in taxi pickups compared to Uber pickups by taxi zone in borough's core. This visualization uses shape and size to help present the information.  
+

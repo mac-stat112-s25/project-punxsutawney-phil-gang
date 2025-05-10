@@ -11,8 +11,8 @@ project:
 
 
 book:
-  title: "project title"
-  author: ["student 1 first and last name", "student 2 first and last name", "student 3 first and last name"]
+  title: "The Truth Behind Groundhog Accuracy: A Data-Driven Study"
+  author: ["Zeke Friendly", "Mayande Mamba", "Jeoy Gebin"]
   date: today  # use today to update date published based on last time project was edited
   date-format: full
   # favicon: images/logo.png
@@ -38,14 +38,40 @@ book:
   chapters:
     - index.qmd
 
+    - part: "Effective TeamWork"
+      chapters:
+      - src/et/zeke-f.qmd
+      - src/et/joey-g.qmd
+      - src/et/mayande-m.qmd
+      
+    - part: "EDA"
+      chapters:
+      - src/eda/EDA-zeke.qmd
+      - src/eda/EDA-joey.qmd
+      - src/eda/EDA-mayande.qmd
+      
+    - part: "Individual Work Docs"
+      chapters: 
+      - src/workdocs/iwc-joey.qmd
+      - src/workdocs/iwc-zeke.qmd
+      - src/workdocs/iwc-mayande.qmd
+      
+    - part: "Presentation Materials"
+      chapters: 
+        - pre/Video.qmd
+      
   appendices:
   - src/appx/proposal.qmd
   - src/appx/case-study.qmd
+  - src/appx/Group-project.qmd
+  
+  
 
 
 
 format:
   html:
+    code-fold: true
     theme: # bootswatch themes--other options https://bootswatch.com/
       light: flatly
       dark: darkly

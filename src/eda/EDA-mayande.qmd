@@ -1,0 +1,28 @@
+---
+title: "Mayande M"
+format: html
+---
+
+
+```{r}
+library(SmartEDA)
+```
+
+
+
+```{r}
+groundhogs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/groundhogs.csv')
+predictions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/predictions.csv')
+
+```
+
+
+```{r}
+ExpData(groundhogs, type = 1)
+ExpData(predictions, type = 1)
+```
+```{r}
+ExpCatViz(groundhogs, target = NULL)
+```
+
+

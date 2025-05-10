@@ -1,0 +1,72 @@
+---
+title: "Zeke F"
+format: html
+---
+
+```{r}
+library(tidyverse)
+library(viridis)
+
+groundhogs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/groundhogs.csv')
+predictions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/predictions.csv')
+
+groundhogs_all <- predictions |> 
+   left_join(groundhogs, join_by(id==id)) |> 
+  filter(region == "Pennsylvania")
+```
+
+```{r}
+# Read Weather Data 
+library(readr)
+Actual_weather <- read_csv("../../data/data.csv", skip = 3)
+```
+
+```{r}
+Actual_weather <- Actual_weather |> 
+  mutate(year = as.numeric (str_sub(Date, 1,4)))
+```
+
+```{r}
+groundhogs_final <- groundhogs_all|> 
+  left_join(Actual_weather, join_by(year == year)) |> 
+  select(year, Value, shadow, latitude, longitude, type)
+```
+
+```{r}
+groundhogs_final <- groundhogs_final %>%
+  mutate(earlyspring = Value >= 37) |> 
+  mutate(accuracy = shadow != earlyspring) |>
+  mutate(type = str_replace(type, "Taxidermied groundhogs", "Taxidermied groundhog")) |> 
+  filter(!is.na(accuracy))
+```
+
+```{r}
+ggplot(groundhogs_final, aes(x = accuracy, fill = type)) +
+  geom_bar()+
+  facet_wrap(~earlyspring, labeller = as_labeller(c(
+    `TRUE` = "Early Spring",
+    `FALSE` = "Winter"
+  ))) +
+  scale_fill_manual("Type of Groundhog", values = viridis(5)) +
+  labs(x = "Groundhog Accuracy", y = "Count Predictions", title = "Accuracy of Groundhog Predictions", caption = "Data from groundhog-day.com and NOAR", alt = "Bar Graph of ground hog prediction acuracy by type of goundhog. Groundhogs are more accurate than not, but not by much") +
+  theme_bw()
+
+
+ggplot(groundhogs_final, aes(y = type, fill = accuracy)) +
+  geom_bar(position = "fill", color = "white")+
+  scale_fill_manual("Groundhog Accuracy", values = viridis(2)) +
+  labs(x = "Type of Groundhog", y = "Percent of Predictions", title = "Proportion of Acurate Groundhog Predictions by Type", caption = "Data from groundhog-day.com and NOAR") +
+  theme_bw()
+
+ggplot(groundhogs_final, aes(x = year, y = Value, color = accuracy)) +
+  geom_point() +
+  scale_color_manual("Groundhog Accuracy", values = viridis(2)) +
+  labs(x = "Year of Prediction", y = "Average Temperature", title = "Prediction Acuracy by Temperature Over Time", caption = "Data from groundhog-day.com and NOAR") +
+  geom_hline(yintercept = 37, color = "red", linetype = "dashed") +
+  theme_bw()
+
+ggplot(Actual_weather, aes(x = year, y = Value)) +
+  geom_smooth()
+  
+```
+

@@ -1,0 +1,43 @@
+---
+title: "Joey G"
+format: html
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(janitor)
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(tidyverse)
+library(viridis)
+library(readr)
+
+groundhogs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/groundhogs.csv')
+predictions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/predictions.csv')
+
+groundhogs_all <- predictions |> 
+   left_join(groundhogs, join_by(id==id)) |> 
+  filter(region == "Pennsylvania")
+
+#Actual_weather <- read_csv("data/data.csv", skip = 3)
+
+Actual_weather <- Actual_weather |> 
+  mutate(year = as.numeric (str_sub(Date, 1,4)))
+
+groundhogs_final <- groundhogs_all|> 
+  left_join(Actual_weather, join_by(year == year))
+
+groundhogs_final <- groundhogs_final %>%
+  mutate(earlyspring = Value >= 37) |> 
+  mutate(accuracy = shadow != earlyspring) |>
+  mutate(type = str_replace(type, "Taxidermied groundhogs", "Taxidermied groundhog")) |> 
+  filter(!is.na(accuracy))
+```
+```{r}
+groundhogs_final |>
+  get_one_to_one()
+```
+```{r}
+compare_df_cols(groundhogs_final, groundhogs, groundhogs_all)
+```
+

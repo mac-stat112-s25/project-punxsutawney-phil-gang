@@ -1,0 +1,25 @@
+---
+title: "Zeke F"
+format: html
+---
+
+# Loading Data
+```{r}
+groundhogs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/groundhogs.csv')
+predictions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/predictions.csv')
+
+library("dataReporter")
+```
+
+```{r}
+summarize(predictions$shadow)
+check(predictions$shadow)
+```
+
+```{r}
+visualize(predictions$year)
+
+visualize(groundhogs$country)
+```
+
+

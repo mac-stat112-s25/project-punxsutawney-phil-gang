@@ -1,13 +1,190 @@
 ---
-title: "Report"
+title: "GroundHog Day Report"
 execute: 
-  echo: true      # change to true to show the code
-code-fold: false  # change to true to fold the code chunks
+  echo: false      # change to true to show the code
+code: false  # change to true to fold the code chunks
 ---
 
-Your report will go here.
 
-```{r}
-# this is a test code
+# Report 
+
+## Background 
+
+Groundhog Day is a tradition where a groundhog **predicts the arrival of spring by observing its shadow**. It is celebrated annually on February 2nd with excitement and cultural significance.The predictions work as follows.
+
+**Shadow Means Winter Continues**
+If the groundhog sees its shadow, winter lasts six more weeks.
+
+**No Shadow Means an Early Spring**
+If no shadow is seen, spring arrives early.
+
+
+![](https://whyy.org/wp-content/uploads/2024/02/AP24026727480980.jpg)
+
+
+
+## Introduction
+
+Our analysis focuses on the longstanding weather prediction using groundhogs. We are curious to explore how effective groundhogs actually are in making predictions of weather. Groundhog Day, which is the event our research is based on, is a tradition where a groundhog predicts the arrival of spring by observing its shadow, celebrated annually with excitement and cultural significance. We would like to build a a better understanding what are the key factors that play a part in predictions and accuracy, using data.  
+
+## Data collection 
+
+We source our data from [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday/blob/main/data/2024/2024-01-30/readme.md), which provides two csv files. The first csv file provides information for groundhog characteristics including their **name**, **longitude**, **latitude**, **type of groundhog**. The second csv is a prediction data set that has information on the predictions made by groundhogs. The corresponding variable between the two data sets is the id variable that identifies each groundhog and can allow for us to merge the two data sets. It is important to note that the authors attempted to provide weather data to accompany this dataset, but have been unsuccessful so far. We explore additional weather data ourselves to supplement the Tidy Tuesday data. The weather data is sourced from the [National Centers for Environmental Information](https://www.ncei.noaa.gov/). With the weather data we will be able to determine the accuracy of the predictions. 
+
+
+## Data preparation 
+
+The Tidy Tuesday data came with two separate data sets: the groundhog data which gave biographical information for groundhogs and the prediction data set which provided a record of annual weather predictions by each groundhog. We merge the groundhog data set to the prediction data set using the id variable. 
+
+We noted that the different regions have different weather patterns hence predictions which added a lot of noise in the data. To deal with this we decided to **filter our data to one specific state, mainly Pennsylvania.** The main reason for choosing this state is because it had the most observations, which would provide us more details in our analysis. 
+
+Once we had merged and filtered the data set, the next step was to add the weather data that would be used to compare with groundhog predictions. We sourced the **data from the National Center for Environmental Information**, which gave us an average temperature for a 3-month period from February to April that we will use to determine an early spring or late winter. We merged by the year variable which presents values of the average temperature for that year in the weather data and is the prediction year for the groundhogs data for the year period from 1998 to 2023. We then produced a final groundhogs prediction data set that incorporates actual weather data for each year.
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(tidyverse)
+library(viridis)
+library(readr)
+
+groundhogs <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/groundhogs.csv')
+predictions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2024/2024-01-30/predictions.csv')
+
+groundhogs_all <- predictions |> 
+   left_join(groundhogs, join_by(id==id)) |> 
+  filter(region == "Pennsylvania")
+
+Actual_weather <- read_csv("data/data.csv", skip = 3)
+
+Actual_weather <- Actual_weather |> 
+  mutate(year = as.numeric (str_sub(Date, 1,4)))
+
+groundhogs_final <- groundhogs_all|> 
+  left_join(Actual_weather, join_by(year == year))
+
+groundhogs_final <- groundhogs_final %>%
+  mutate(earlyspring = Value >= 37) |> 
+  mutate(accuracy = shadow != earlyspring) |>
+  mutate(type = str_replace(type, "Taxidermied groundhogs", "Taxidermied groundhog")) |> 
+  filter(!is.na(accuracy))
 ```
 
+
+
+## Findings
+
+The next stage is analyzing the data and we make several visualizations to explore our research question. First we wanted to learn about how accurate groundhogs are overall. Our first visualization explores the accuracy of groundhog predictions colored type of groundhog. This is a stacked bar graph with the x axis being groundhog accuracy (true or false) which determines if the groundhog was right or wrong in its predictions, and the y axis being the count of predictions. The bar graph indicates that overall groundhogs are slightly more accurate than not, with more true counts than false counts. 
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+ggplot(groundhogs_final, aes(x = accuracy, fill = type)) +
+  geom_bar() +
+  scale_fill_manual("Type of Groundhog", values = viridis(5)) +
+  scale_x_discrete(labels = c("TRUE" = "Accurate", "FALSE" = "Not Accurate")) +  
+  labs(
+    x = "Groundhog Accuracy", 
+    y = "Count Predictions", 
+    title = "Accuracy of Groundhog Predictions", 
+    caption = "Data from groundhog-day.com and NOAR", 
+    alt = "Bar Graph of groundhog prediction accuracy by type of groundhog. Groundhogs are more accurate than not, but not by much"
+  ) +
+  theme_bw()
+
+```
+
+The accuracy of each type of groundhog is quite different based on groundhog type. The stacked bar graph shows the proportion of accurate predictions by groundhog types. The y axis is the groundhog type and the y axis is the percent of predictions that are true and those that are false, coded by color. Groundhog puppets are the most accurate (over 75%), while real groundhogs are some of the least (around 50%).
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+ggplot(groundhogs_final, aes(y = type, fill = accuracy)) +
+  geom_bar(position = "fill", color = "white") +
+  scale_fill_manual(
+    "Groundhog Accuracy", 
+    values = viridis(2), 
+    labels = c("Not Accurate", "Accurate")  
+  ) +
+  labs(
+    x = "Percent of Predictions", 
+    y = "Type of Groundhog", 
+    title = "Proportion of Accurate Groundhog Predictions by Type", 
+    caption = "Data from groundhog-day.com and NOAR"
+  ) +
+  theme_bw()
+
+```
+
+
+Additionally we wanted to explore how accurate ground hogs were depending on the temperature. We analyze accuracy by temperature overtime using a scatter plot. The x axis is the year of prediction and the y axis is the average temperature. The points are grouped by true or false which essentially measures the accuracy of the groundhog. Additionally we select a line that represents the early spring cut off, defined by the temperature where frost stops forming (37°f). The results show that groundhogs are more accurate at predicting more winter than early spring. 
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+ggplot(groundhogs_final, aes(x = year, y = Value, color = accuracy)) +
+  geom_point() +
+  scale_color_manual(
+    "Groundhog Accuracy", 
+    values = viridis(2), 
+    labels = c("TRUE" = "Accurate", "FALSE" = "Not Accurate")  
+  ) +
+  labs(
+    x = "Year of Prediction", 
+    y = "Average Temperature", 
+    title = "Prediction Accuracy by Temperature Over Time", 
+    caption = "Data from groundhog-day.com and NOAR"
+  ) +
+  geom_hline(yintercept = 37, color = "red", linetype = "dashed") +
+  theme_bw()
+
+```
+
+
+Finally we wanted to explore where the ground hogs we were studying are located. The final visualization is a leaflet map that shows the distribution of the different groundhog types. This is an interactive leaflet map that allows the reader to zoom in and out. We have coded the map to be an html file. The leaflet map shows that the majority of groundhogs are located in Southeast Pennsylvania, however the outliers are more often real Groundhogs.
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, error=FALSE}
+library(mosaic)
+
+#Tribble dataset
+
+groundhog_location <- tribble(
+  ~name, ~longitude, ~latitude, ~type,
+  "Punxsutawney Phil",-78.96225, 40.9312, "Groundhog", 
+  "Octoraro Orphie", -76.09196, 39.82554, "Taxidermied groundhog",
+  "Schnogadahl Sammi",-75.49787, 40.90142, "Taxidermied groundhog",
+  "Poor Richard", -76.72926, 39.96586, "Taxidermied groundhog",
+  "Uni the Groundhog", -76.29992, 40.41813, "Taxidermied groundhog",
+  "Grover and Sue", -76.36766, 40.57162, "Taxidermied groundhog",
+  "Dover Doug", -76.85717, 39.99791, "Person in a groundhog suit",
+  "Lawrenceville Lucy", -77.20171, 41.97356, "Groundhog",
+  "Mount Joy Minnie", -76.50431, 40.10912, "Plush groundhog",
+  "Patty Pagoda", -75.90783, 40.33607, "Person in a groundhog suit",
+  "Tinicum Tim", -75.25721, 39.89215, "Groundhog puppet",
+  "Harleysville Hank", -75.38234, 40.29050, "Plush groundhog",
+  "Mount Gretna Grady", -76.46776, 40.24677, "Plush groundhog",
+  "Poppy the Groundhog", -76.66445, 40.12133, "Groundhog",
+  "MT Parker", -76.30730, 40.05880,	"Plush groundhog"
+)
+
+library(gplots)
+library(leaflet)
+library(htmlwidgets)
+
+
+#Map
+leaflet(data = groundhog_location,
+  options = leafletOptions(minZoom = 7, maxZoom = 12)) |>
+  addTiles() |>
+  addCircles(color = ~colorFactor(c("darkred","darkgreen","red","darkblue","orange"), domain= groundhog_location$type)(type), label = groundhog_location$name) |>
+   addLegend(position = "bottomright",
+            colors = c("darkred","darkgreen","red","darkblue","orange"), labels = c("Groundhog","Groundhog Puppet", "Person in a groundhog suit", "Plush groundhog","Taxidermied groundhog"), title ="Legend")|>
+  addControl("<strong>Distribution of Groundhogs</strong>", position = "topright")
+#filtered data
+
+groundhogs_penn <- groundhogs_all |> 
+  filter(region == "Pennsylvania")
+
+```
+ 
+
+
+## Conclusion
+
+![](https://i.imgflip.com/1ivp9a.jpg)
+
+Groundhog predictions have an almost 50% chance of being correct and in most cases they are good at predicting winter. Since there are so many different types of groundhogs, real groundhogs are not the only animal type we consider. Through data analysis and data visualization, we found that Groundhogs are generally 50% accurate in their predictions. This varies slightly based on type with groundhog puppets and groundhog plushies being slightly more accurate.These results give a valid value to the holiday that will continue to play a significant role in many communities. In conclusion, although it may be hard to confirm that groundhogs are truly natures meteorologits, they still play a significant role in nature. 

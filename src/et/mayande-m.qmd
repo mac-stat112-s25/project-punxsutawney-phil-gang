@@ -1,0 +1,31 @@
+---
+title: "Mayande M"
+format: html
+---
+
+[Teamwork-Article](https://www.ncbi.nlm.nih.gov/books/NBK310384/)
+
+## Title: Overview of the Research on Team Effectiveness
+
+This article present a summary of literature on team effectiveness, highlighting findings on the key features that create challenges for team science. Team effectiveness is a team's capacity to achieve its goals and objectives, which leads to improved outcomes for the team members as well as outcomes produced or influenced by the team. It discusses some background information to give key considerations that build teamwork,theoretical models frameworks. It presents an interesting concept called the Team processes which are the means by which team members marshal and coordinate their individual resources.These include: 
+
+- Cognitive Team Processes
+- Team Mental Models and Transactive Memory Cognitive Team Interaction
+- Team Climate
+- Psychological Safety
+- Motivational and Affective Team Processes - Team Cohesion, Team Efficacy, Team Conflict
+- Team Behavioral Processes - Team Process Competencies, Team Self-Regulation, Measuring Team Processes
+
+The article also discusses interventions that have been found to influence team processes:
+
+- Team Composition: Individual Inputs to Shape Team Processes
+- Professional Development to Shape Team Processes
+- Leadership to Shape Team Processes
+
+Some key challenges taht effect the processes: 
+
+- Deep knowledge integration
+- Large science groups composed of sub-teams that may be misaligned with other subteams
+- Geographic dispersion
+- High task interdependence
+- Time allocation and organization
